@@ -15042,7 +15042,7 @@ MonoBehaviour:
   _rigidBodySource: {fileID: 1008806318}
   _rigidBodyDynamicOnRelease: 1
   _verticalReleaseMultiplier: 4
-  _horizontalReleaseMultiplier: 6
+  _horizontalReleaseMultiplier: 60
   _previewGrabPosesMode: 3
   _previewPosesRegenerationType: 0
   _previewPosesRegenerationIndex: -1
@@ -15111,10 +15111,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aea3fdc88623ac2408175a7ba3e68859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballSpeed: 20
-  speedFactor: 0.5
+  ballSpeed: 1
+  speedFactor: 1
   rb: {fileID: 0}
   ballServeposition: {x: 0, y: 0, z: 0}
+  oldballServeposition: {x: 0, y: 0, z: 0}
   ballGroundposition: {x: 0, y: 0, z: 0}
   ballPoint: {fileID: 1632075675}
   ballServeSpeed: 0.2
@@ -19532,7 +19533,7 @@ PrefabInstance:
     - target: {fileID: -1646988816019855448, guid: c500486bb7bb90b40b3ee11f6f37459b,
         type: 3}
       propertyPath: m_Mass
-      value: 0.018
+      value: 0.025
       objectReference: {fileID: 0}
     - target: {fileID: -1646988816019855448, guid: c500486bb7bb90b40b3ee11f6f37459b,
         type: 3}

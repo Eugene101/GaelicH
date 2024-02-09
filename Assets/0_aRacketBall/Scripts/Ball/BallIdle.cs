@@ -14,7 +14,7 @@ public class BallIdle : State
     {
         _ballBasic.transform.position = Vector3.one * 1000;
         _ballBasic.rb.detectCollisions = false;
-        _ballBasic.rb.isKinematic = true;
+        //_ballBasic.rb.isKinematic = true;
         _ballBasic.rb.useGravity = false;
         //_ballBasic.rb.velocity = Vector3.zero;
     }

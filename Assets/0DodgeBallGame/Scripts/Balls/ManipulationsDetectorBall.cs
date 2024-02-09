@@ -9,8 +9,7 @@ class ManipulationsDetectorBall : UxrGrabbableObjectComponent<ManipulationsDetec
 {
     public static bool ballReleased;
     public static bool ballGrabbed;
-    public Action BallRealse;
-    public static event Action BallReleased;
+  
     protected override void OnObjectGrabbing(UxrManipulationEventArgs e)
     {
         Debug.Log($"Object {e.GrabbableObject.name} is about to be grabbed by avatar {e.Grabber.Avatar.name}");
