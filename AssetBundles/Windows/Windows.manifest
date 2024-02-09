@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 2933784620
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: windowsindex
+      Dependencies: {}
