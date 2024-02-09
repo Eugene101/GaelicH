@@ -15,10 +15,7 @@ public class P_Ball : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
-    {
-        print("Vasya" + collision.gameObject.name);
-
-        //if (collision.gameObject.tag != "Player")
+    {   //if (collision.gameObject.tag != "Player")
         //{
         //    Invoke("KillPlayerBall", 5f);
         //    PlayerBallController.iCanSpawnBall = true;

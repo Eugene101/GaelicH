@@ -14,9 +14,7 @@ public class P_BallController : MonoBehaviour
     Clothcode clothcode;
     public static bool iCanSpawnBall = true;
     public static bool ballIsInGame;
-    GameManager gameManager;
     
-
     private void Start()
     {
         clothcode = cloth.GetComponent<Clothcode>();
