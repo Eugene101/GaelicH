@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class RayfromHand : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static bool isHandOnGround;
+       private void OnTriggerEnter(Collider other)
     {
-        
-    }
+        if (other.tag == "Ground")
+        {
+            isHandOnGround = true;
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        Debug.DrawRay(transform.position, -transform.forward * 10, Color.red);
+        else
+        {
+            isHandOnGround = false;
+        }
     }
-    private void OnDrawGizmos()
+    private void OnTriggerExit(Collider other)
     {
-        Gizmos.DrawRay(transform.position, -transform.forward);
+        if (other.tag == "Ground")
+        {
+            isHandOnGround = false;
+        }
     }
 }

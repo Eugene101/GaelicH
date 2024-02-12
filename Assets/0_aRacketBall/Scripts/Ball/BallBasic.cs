@@ -16,12 +16,11 @@ public class BallBasic : MonoBehaviour
     public static bool returnBall;
     public static bool ballDirectionUp;
     public static bool ballDirectionDown;
-    public Vector3 ballServeposition;
-    public Vector3 oldballServeposition;
-    public Vector3 ballGroundposition;
     [SerializeField] Transform ballPoint;
     public float ballServeSpeed = 0.1f;
     public static bool iCanSpawnBall = true;
+    public Vector3 ballServeposition;
+    public Vector3 ballGroundposition;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +31,7 @@ public class BallBasic : MonoBehaviour
 
     public void Serve()
     {
-        ballServeposition = oldballServeposition = transform.position;
+        ballServeposition = transform.position;
         stateMachine.ChangeState(new BallServe(this));
     }
     private void OnCollisionExit(Collision collision)
@@ -46,9 +45,8 @@ public class BallBasic : MonoBehaviour
         {
             //rb.useGravity = false;
             ballDirectionUp = true;
-            ballDirectionDown = false; ;
+            ballDirectionDown = false;
             ballGroundposition = transform.position;
-            ballServeposition += new Vector3(0f,-0.1f,0f);
         }
 
         if (isServing && collision.gameObject.name == "Hand_Right")
@@ -56,9 +54,8 @@ public class BallBasic : MonoBehaviour
             //rb.useGravity = false;
             ballDirectionUp = false;
             ballDirectionDown = true;
-            rb.velocity += new Vector3(0f, -1f, 0f);
+            rb.velocity += new Vector3(0f, 1f, 0f);
             ballGroundposition = transform.position;
-            ballServeposition = oldballServeposition + new Vector3(0f, 0.5f, 0f); 
         }
 
 
@@ -70,10 +67,10 @@ public class BallBasic : MonoBehaviour
         if (UxrAvatar.LocalAvatarInput.GetButtonsPressDown(UxrHandSide.Right, UxrInputButtons.Button1) && iCanSpawnBall)
         {
             transform.position = ballPoint.position;
-            //rb.velocity = Vector3.zero;
-            //rb.angularVelocity = Vector3.zero;
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
             rb.useGravity = false;
-            //ballServeposition = transform.position;
+            ballServeposition = transform.position;
             Invoke("CoolDown", 0.2f);
         }
     }
