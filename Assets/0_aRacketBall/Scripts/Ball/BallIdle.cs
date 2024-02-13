@@ -12,10 +12,11 @@ public class BallIdle : State
 
     public override void Enter()
     {
-        _ballBasic.transform.position = Vector3.one * 1000;
+        _ballBasic.transform.position = _ballBasic.ballServeposition.position;
         _ballBasic.rb.detectCollisions = false;
         _ballBasic.rb.isKinematic = true;
         _ballBasic.rb.useGravity = false;
+        BallBasic.isIdle = true;
         //_ballBasic.rb.velocity = Vector3.zero;
     }
 
@@ -23,7 +24,8 @@ public class BallIdle : State
     {
         _ballBasic.rb.detectCollisions = true;
         _ballBasic.rb.isKinematic = false;
-        _ballBasic.rb.useGravity = true;
+        _ballBasic.rb.useGravity = false;
+        BallBasic.isIdle = false;
     }
 
     public override void Update()
