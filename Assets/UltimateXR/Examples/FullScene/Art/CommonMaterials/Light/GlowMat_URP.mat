@@ -24,7 +24,12 @@ Material:
   m_Shader: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
+<<<<<<< Updated upstream
   m_ValidKeywords: []
+=======
+  m_ValidKeywords:
+  - _SURFACE_TYPE_TRANSPARENT
+>>>>>>> Stashed changes
   m_InvalidKeywords:
   - _EMISSION
   - _SURFACE_TYPE_TRANSPARENT
@@ -104,6 +109,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
+    - _AlphaToMask: 0
     - _Blend: 2
     - _BlendModePreserveSpecular: 1
     - _BlendOp: 0
