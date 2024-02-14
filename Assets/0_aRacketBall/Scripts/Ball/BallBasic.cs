@@ -55,7 +55,6 @@ public class BallBasic : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("VasyaXoroshijxxx" + collision.gameObject.tag +" " +isAttacking);
         if (isServing && collision.gameObject.name == "Hand_Right" && RayfromHand.isHandOnGround)
         {
 
@@ -67,7 +66,7 @@ public class BallBasic : MonoBehaviour
             isServing = false;
         }
 
-       
+
         else if (isAttacking && collision.gameObject.name == "Hand_Right")
         {
             //ContactPoint cp = collision.contacts[0];
@@ -82,7 +81,6 @@ public class BallBasic : MonoBehaviour
         else if (isAttacking && collision.gameObject.tag.Contains("Ground"))
         {
             //rb.AddForce(transform.forward * groundBounce);
-            Debug.Log("VasyaXoroshij011");
             stateMachine.Intialize(new BallHitting(this));
             isAttacking = false;
             isHitting = true;

@@ -23,6 +23,7 @@ public class BallHitting : State
 
     public override void Update()
     {
+        Debug.Log("aaaaaaaaaaaaaaaaaaaaaaaa");
         //if (BallBasic.isHitting)
         //{
         //    _ballBasic.rb.velocity = Vector3.zero;
@@ -35,6 +36,9 @@ public class BallHitting : State
         //        _ballBasic.Idle();
         //    }
         //}
-        _ballBasic.rb.velocity *= _ballBasic.velocityCoeff;
+        //_ballBasic.rb.velocity *= _ballBasic.velocityCoeff;
+        Vector3 direction = _ballBasic.hand.transform.position - _ballBasic.transform.position;
+        //direction.z = 0f;
+        _ballBasic.rb.AddForce(direction * 0.2f);
     }
 }
