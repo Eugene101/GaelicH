@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UltimateXR.Core;
 using UltimateXR.Devices.Integrations.SteamVR;
 
-namespace UltimateXR.Devices.Integrations.Oculus
+namespace UltimateXR.Devices.Integrations.Meta
 {
     /// <summary>
     ///     Oculus Touch controllers input using SteamVR.

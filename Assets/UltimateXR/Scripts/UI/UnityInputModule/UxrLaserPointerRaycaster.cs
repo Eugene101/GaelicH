@@ -16,13 +16,24 @@ namespace UltimateXR.UI.UnityInputModule
     ///     interaction using laser pointers from a distance.
     /// </summary>
     [RequireComponent(typeof(Canvas))]
-    public class UxrLaserPointerRaycaster : GraphicRaycaster
+    public class UxrLaserPointerRaycaster : UxrGraphicRaycaster
     {
         #region Public Overrides GraphicRaycaster
 
         /// <inheritdoc />
         public override void Raycast(PointerEventData eventData, List<RaycastResult> resultAppendList)
         {
+            // Check if it should be ray-casted
+
+            UxrPointerEventData pointerEventData = eventData as UxrPointerEventData;
+
+            if (pointerEventData == null || pointerEventData.LaserPointer == null)
+            {
+                return;
+            }
+
+            // Initialize if necessary
+
             if (_canvas == null)
             {
                 _canvas      = gameObject.GetComponent<Canvas>();
@@ -38,15 +49,13 @@ namespace UltimateXR.UI.UnityInputModule
             {
                 return;
             }
-            
-            UxrPointerEventData pointerEventData = eventData as UxrPointerEventData;
 
             // Raycast against the canvas, gather all results and append to the list
 
             _raycastResults.Clear();
 
-            var ray = new Ray(eventData.pointerCurrentRaycast.worldPosition, eventData.pointerCurrentRaycast.worldNormal);
-            Raycast(_canvas, pointerEventData?.LaserPointer, eventCamera, ray, ref _raycastResults, ref resultAppendList, out float _);
+            var ray = new Ray(pointerEventData.LaserPointer.LaserPos, pointerEventData.LaserPointer.LaserDir);
+            Raycast(_canvas, pointerEventData.LaserPointer, eventCamera, ray, ref _raycastResults, ref resultAppendList, out float _);
 
             // Assign correct indices and get closest raycast
 
@@ -220,7 +229,7 @@ namespace UltimateXR.UI.UnityInputModule
                 }
             }
 
-            results.Sort((g1, g2) => g2.depth.CompareTo(g1.depth));
+            results.Sort(CompareDepth);
             resultAppendList.AddRange(results);
         }
 

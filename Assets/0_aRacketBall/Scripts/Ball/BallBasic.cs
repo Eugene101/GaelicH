@@ -30,6 +30,8 @@ public class BallBasic : MonoBehaviour
     // Start is called before the first frame update
     public float bounceSpeed = 5f; // Adjust this value to change the bounce speed
     public float amplitude = 1f;
+    public float groundBounce;
+    [Range(0, 0.9f)] public float velocityCoeff;
     public Vector3 initialPosition;
     void Start()
     {
@@ -42,12 +44,18 @@ public class BallBasic : MonoBehaviour
     {
         stateMachine.ChangeState(new BallServe(this));
     }
+
+    public void Idle()
+    {
+        stateMachine.ChangeState(new BallIdle(this));
+    }
     private void OnCollisionExit(Collision collision)
     {
 
     }
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("VasyaXoroshijxxx" + collision.gameObject.tag +" " +isAttacking);
         if (isServing && collision.gameObject.name == "Hand_Right" && RayfromHand.isHandOnGround)
         {
 
@@ -59,36 +67,25 @@ public class BallBasic : MonoBehaviour
             isServing = false;
         }
 
-        else if (isAttacking && collision.gameObject.name != "Hand_Right")
+       
+        else if (isAttacking && collision.gameObject.name == "Hand_Right")
         {
             //ContactPoint cp = collision.contacts[0];
             //Vector3 testvector = Vector3.Reflect(cp.normal, Vector3.forward);
-            rb.useGravity = true;
+            rb.AddForce(hand.transform.up * ballAttackSpeed * UxrAvatar.LocalAvatar.GetGrabber(UxrHandSide.Right).Velocity.magnitude);
             //rb.AddForce(testvector*-10f);
             //print("testvecor: " + testvector);
             //rb.velocity = Vector3.Reflect(lastVelocity * (-500), cp.normal);
 
         }
 
-        else if (isAttacking && collision.gameObject.name == "Hand_Right")
+        else if (isAttacking && collision.gameObject.tag.Contains("Ground"))
         {
-            //ContactPoint cp = collision.contacts[0];
-            //Vector3 testvector = Vector3.Reflect(cp.normal, Vector3.forward);
-             rb.AddForce(hand.transform.up * ballAttackSpeed * UxrAvatar.LocalAvatar.GetGrabber(UxrHandSide.Right).Velocity.magnitude);
-            //rb.AddForce(testvector*-10f);
-            //print("testvecor: " + testvector);
-            //rb.velocity = Vector3.Reflect(lastVelocity * (-500), cp.normal);
-
-        }
-
-        else if (true)
-        {
-
-        }
-
-        else if (isAttacking && collision.gameObject.name == "Hand_Right")
-        {
-
+            //rb.AddForce(transform.forward * groundBounce);
+            Debug.Log("VasyaXoroshij011");
+            stateMachine.Intialize(new BallHitting(this));
+            isAttacking = false;
+            isHitting = true;
         }
 
 
@@ -96,7 +93,7 @@ public class BallBasic : MonoBehaviour
     private void Update()
     {
         stateMachine.currentState.Update();
-        Debug.Log("lastvelocity: " + lastVelocity);
+
         if (UxrAvatar.LocalAvatarInput.GetButtonsPressDown(UxrHandSide.Right, UxrInputButtons.Button1) && iCanSpawnBall)
         {
             Serve();

@@ -10,7 +10,9 @@
         "SteamVR",
         "Oculus.VR",
         "Wave.Essence.CompositorLayer",
-        "Unity.XR.PicoXR"
+        "Unity.XR.PicoXR",
+        "Unity.XR.Oculus",
+        "MagicLeap.SDK"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -59,6 +61,16 @@
             "name": "com.unity.xr.picoxr",
             "expression": "",
             "define": "ULTIMATEXR_USE_PICOXR_SDK"
+        },
+        {
+            "name": "com.unity.xr.oculus",
+            "expression": "",
+            "define": "ULTIMATEXR_UNITY_XR_OCULUS"
+        },
+        {
+            "name": "com.magicleap.unitysdk",
+            "expression": "",
+            "define": "ULTIMATEXR_USE_MAGICLEAP_SDK"
         }
     ],
     "noEngineReferences": false

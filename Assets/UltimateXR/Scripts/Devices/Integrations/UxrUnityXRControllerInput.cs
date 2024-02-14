@@ -9,6 +9,9 @@ using UltimateXR.Core;
 using UltimateXR.Haptics;
 using UnityEngine;
 using UnityEngine.XR;
+#if ULTIMATEXR_UNITY_XR_OCULUS
+using Unity.XR.Oculus;
+#endif
 
 namespace UltimateXR.Devices.Integrations
 {
@@ -143,7 +146,7 @@ namespace UltimateXR.Devices.Integrations
                 return capabilities;
             }
 
-            if (!inputDevice.TryGetHapticCapabilities(out HapticCapabilities hapticCapabilities))
+            if (inputDevice.TryGetHapticCapabilities(out HapticCapabilities hapticCapabilities))
             {
                 if (hapticCapabilities.supportsBuffer)
                 {
@@ -184,7 +187,7 @@ namespace UltimateXR.Devices.Integrations
                 return;
             }
 
-            if (!inputDevice.TryGetHapticCapabilities(out HapticCapabilities hapticCapabilities))
+            if (!inputDevice.TryGetHapticCapabilities(out HapticCapabilities hapticCapabilities) || hapticCapabilities.numChannels == 0)
             {
                 return;
             }
@@ -247,7 +250,7 @@ namespace UltimateXR.Devices.Integrations
                 return;
             }
 
-            if (!inputDevice.TryGetHapticCapabilities(out HapticCapabilities hapticCapabilities))
+            if (!inputDevice.TryGetHapticCapabilities(out HapticCapabilities hapticCapabilities) || hapticCapabilities.numChannels == 0)
             {
                 return;
             }
@@ -495,12 +498,24 @@ namespace UltimateXR.Devices.Integrations
 
             bool buttonPressTriggerLeft        = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Trigger,       ButtonContact.Press);
             bool buttonPressTriggerRight       = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Trigger,       ButtonContact.Press);
+            bool buttonPressTrigger2Left       = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Trigger2,      ButtonContact.Press);
+            bool buttonPressTrigger2Right      = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Trigger2,      ButtonContact.Press);
             bool buttonPressJoystickLeft       = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Joystick,      ButtonContact.Press);
             bool buttonPressJoystickRight      = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Joystick,      ButtonContact.Press);
+            bool buttonPressJoystick2Left      = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Joystick2,     ButtonContact.Press);
+            bool buttonPressJoystick2Right     = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Joystick2,     ButtonContact.Press);
             bool buttonPressButton1Left        = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Button1,       ButtonContact.Press);
             bool buttonPressButton1Right       = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Button1,       ButtonContact.Press);
             bool buttonPressButton2Left        = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Button2,       ButtonContact.Press);
             bool buttonPressButton2Right       = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Button2,       ButtonContact.Press);
+            bool buttonPressButton3Left        = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Button3,       ButtonContact.Press);
+            bool buttonPressButton3Right       = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Button3,       ButtonContact.Press);
+            bool buttonPressButton4Left        = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Button4,       ButtonContact.Press);
+            bool buttonPressButton4Right       = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Button4,       ButtonContact.Press);
+            bool buttonPressBumperLeft         = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Bumper,        ButtonContact.Press);
+            bool buttonPressBumperRight        = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Bumper,        ButtonContact.Press);
+            bool buttonPressBumper2Left        = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Bumper2,       ButtonContact.Press);
+            bool buttonPressBumper2Right       = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Bumper2,       ButtonContact.Press);
             bool buttonPressMenuLeft           = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Menu,          ButtonContact.Press);
             bool buttonPressMenuRight          = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Menu,          ButtonContact.Press);
             bool buttonPressGripLeft           = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Grip,          ButtonContact.Press);
@@ -510,12 +525,24 @@ namespace UltimateXR.Devices.Integrations
 
             SetButtonFlags(ButtonFlags.PressFlagsLeft,  UxrInputButtons.Trigger,       buttonPressTriggerLeft);
             SetButtonFlags(ButtonFlags.PressFlagsRight, UxrInputButtons.Trigger,       buttonPressTriggerRight);
+            SetButtonFlags(ButtonFlags.PressFlagsLeft,  UxrInputButtons.Trigger2,      buttonPressTrigger2Left);
+            SetButtonFlags(ButtonFlags.PressFlagsRight, UxrInputButtons.Trigger2,      buttonPressTrigger2Right);
             SetButtonFlags(ButtonFlags.PressFlagsLeft,  UxrInputButtons.Joystick,      buttonPressJoystickLeft);
             SetButtonFlags(ButtonFlags.PressFlagsRight, UxrInputButtons.Joystick,      buttonPressJoystickRight);
+            SetButtonFlags(ButtonFlags.PressFlagsLeft,  UxrInputButtons.Joystick2,     buttonPressJoystick2Left);
+            SetButtonFlags(ButtonFlags.PressFlagsRight, UxrInputButtons.Joystick2,     buttonPressJoystick2Right);
             SetButtonFlags(ButtonFlags.PressFlagsLeft,  UxrInputButtons.Button1,       buttonPressButton1Left);
             SetButtonFlags(ButtonFlags.PressFlagsRight, UxrInputButtons.Button1,       buttonPressButton1Right);
             SetButtonFlags(ButtonFlags.PressFlagsLeft,  UxrInputButtons.Button2,       buttonPressButton2Left);
             SetButtonFlags(ButtonFlags.PressFlagsRight, UxrInputButtons.Button2,       buttonPressButton2Right);
+            SetButtonFlags(ButtonFlags.PressFlagsLeft,  UxrInputButtons.Button3,       buttonPressButton3Left);
+            SetButtonFlags(ButtonFlags.PressFlagsRight, UxrInputButtons.Button3,       buttonPressButton3Right);
+            SetButtonFlags(ButtonFlags.PressFlagsLeft,  UxrInputButtons.Button4,       buttonPressButton4Left);
+            SetButtonFlags(ButtonFlags.PressFlagsRight, UxrInputButtons.Button4,       buttonPressButton4Right);
+            SetButtonFlags(ButtonFlags.PressFlagsLeft,  UxrInputButtons.Bumper,        buttonPressBumperLeft);
+            SetButtonFlags(ButtonFlags.PressFlagsRight, UxrInputButtons.Bumper,        buttonPressBumperRight);
+            SetButtonFlags(ButtonFlags.PressFlagsLeft,  UxrInputButtons.Bumper2,       buttonPressBumper2Left);
+            SetButtonFlags(ButtonFlags.PressFlagsRight, UxrInputButtons.Bumper2,       buttonPressBumper2Right);
             SetButtonFlags(ButtonFlags.PressFlagsLeft,  UxrInputButtons.Menu,          buttonPressMenuLeft);
             SetButtonFlags(ButtonFlags.PressFlagsRight, UxrInputButtons.Menu,          buttonPressMenuRight);
             SetButtonFlags(ButtonFlags.PressFlagsLeft,  UxrInputButtons.Grip,          buttonPressGripLeft);
@@ -525,12 +552,24 @@ namespace UltimateXR.Devices.Integrations
 
             bool buttonTouchTriggerLeft        = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Trigger,       ButtonContact.Touch);
             bool buttonTouchTriggerRight       = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Trigger,       ButtonContact.Touch);
+            bool buttonTouchTrigger2Left       = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Trigger2,      ButtonContact.Touch);
+            bool buttonTouchTrigger2Right      = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Trigger2,      ButtonContact.Touch);
             bool buttonTouchJoystickLeft       = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Joystick,      ButtonContact.Touch);
             bool buttonTouchJoystickRight      = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Joystick,      ButtonContact.Touch);
+            bool buttonTouchJoystick2Left      = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Joystick2,     ButtonContact.Touch);
+            bool buttonTouchJoystick2Right     = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Joystick2,     ButtonContact.Touch);
             bool buttonTouchButton1Left        = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Button1,       ButtonContact.Touch);
             bool buttonTouchButton1Right       = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Button1,       ButtonContact.Touch);
             bool buttonTouchButton2Left        = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Button2,       ButtonContact.Touch);
             bool buttonTouchButton2Right       = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Button2,       ButtonContact.Touch);
+            bool buttonTouchButton3Left        = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Button3,       ButtonContact.Touch);
+            bool buttonTouchButton3Right       = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Button3,       ButtonContact.Touch);
+            bool buttonTouchButton4Left        = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Button4,       ButtonContact.Touch);
+            bool buttonTouchButton4Right       = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Button4,       ButtonContact.Touch);
+            bool buttonTouchBumperLeft         = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Bumper,        ButtonContact.Touch);
+            bool buttonTouchBumperRight        = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Bumper,        ButtonContact.Touch);
+            bool buttonTouchBumper2Left        = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Bumper2,       ButtonContact.Touch);
+            bool buttonTouchBumper2Right       = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Bumper2,       ButtonContact.Touch);
             bool buttonTouchMenuLeft           = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Menu,          ButtonContact.Touch);
             bool buttonTouchMenuRight          = HasButtonContact(UxrHandSide.Right, UxrInputButtons.Menu,          ButtonContact.Touch);
             bool buttonTouchGripLeft           = HasButtonContact(UxrHandSide.Left,  UxrInputButtons.Grip,          ButtonContact.Touch);
@@ -540,12 +579,24 @@ namespace UltimateXR.Devices.Integrations
 
             SetButtonFlags(ButtonFlags.TouchFlagsLeft,  UxrInputButtons.Trigger,       buttonTouchTriggerLeft);
             SetButtonFlags(ButtonFlags.TouchFlagsRight, UxrInputButtons.Trigger,       buttonTouchTriggerRight);
+            SetButtonFlags(ButtonFlags.TouchFlagsLeft,  UxrInputButtons.Trigger2,      buttonTouchTrigger2Left);
+            SetButtonFlags(ButtonFlags.TouchFlagsRight, UxrInputButtons.Trigger2,      buttonTouchTrigger2Right);
             SetButtonFlags(ButtonFlags.TouchFlagsLeft,  UxrInputButtons.Joystick,      buttonTouchJoystickLeft);
             SetButtonFlags(ButtonFlags.TouchFlagsRight, UxrInputButtons.Joystick,      buttonTouchJoystickRight);
+            SetButtonFlags(ButtonFlags.TouchFlagsLeft,  UxrInputButtons.Joystick2,     buttonTouchJoystick2Left);
+            SetButtonFlags(ButtonFlags.TouchFlagsRight, UxrInputButtons.Joystick2,     buttonTouchJoystick2Right);
             SetButtonFlags(ButtonFlags.TouchFlagsLeft,  UxrInputButtons.Button1,       buttonTouchButton1Left);
             SetButtonFlags(ButtonFlags.TouchFlagsRight, UxrInputButtons.Button1,       buttonTouchButton1Right);
             SetButtonFlags(ButtonFlags.TouchFlagsLeft,  UxrInputButtons.Button2,       buttonTouchButton2Left);
             SetButtonFlags(ButtonFlags.TouchFlagsRight, UxrInputButtons.Button2,       buttonTouchButton2Right);
+            SetButtonFlags(ButtonFlags.TouchFlagsLeft,  UxrInputButtons.Button3,       buttonTouchButton3Left);
+            SetButtonFlags(ButtonFlags.TouchFlagsRight, UxrInputButtons.Button3,       buttonTouchButton3Right);
+            SetButtonFlags(ButtonFlags.TouchFlagsLeft,  UxrInputButtons.Button4,       buttonTouchButton4Left);
+            SetButtonFlags(ButtonFlags.TouchFlagsRight, UxrInputButtons.Button4,       buttonTouchButton4Right);
+            SetButtonFlags(ButtonFlags.TouchFlagsLeft,  UxrInputButtons.Bumper,        buttonTouchBumperLeft);
+            SetButtonFlags(ButtonFlags.TouchFlagsRight, UxrInputButtons.Bumper,        buttonTouchBumperRight);
+            SetButtonFlags(ButtonFlags.TouchFlagsLeft,  UxrInputButtons.Bumper2,       buttonTouchBumper2Left);
+            SetButtonFlags(ButtonFlags.TouchFlagsRight, UxrInputButtons.Bumper2,       buttonTouchBumper2Right);
             SetButtonFlags(ButtonFlags.TouchFlagsLeft,  UxrInputButtons.Menu,          buttonTouchMenuLeft);
             SetButtonFlags(ButtonFlags.TouchFlagsRight, UxrInputButtons.Menu,          buttonTouchMenuRight);
             SetButtonFlags(ButtonFlags.TouchFlagsLeft,  UxrInputButtons.Grip,          buttonTouchGripLeft);
@@ -631,6 +682,18 @@ namespace UltimateXR.Devices.Integrations
         #endregion
 
         #region Protected Methods
+
+        /// <summary>
+        ///     Checks whether a non-standard button in a controller is currently being touched or pressed.
+        /// </summary>
+        /// <param name="handSide">Which controller side to check</param>
+        /// <param name="button">Button to check</param>
+        /// <param name="buttonContact">Type of contact to check for (touch or press)</param>
+        /// <returns>Boolean telling whether the specified button has contact</returns>
+        protected virtual bool HasButtonContactOther(UxrHandSide handSide, UxrInputButtons button, ButtonContact buttonContact)
+        {
+            return false;
+        }
 
         /// <summary>
         ///     Gets the input device interface in Unity's input system for a given hand.
@@ -753,10 +816,20 @@ namespace UltimateXR.Devices.Integrations
             }
             else if (button == UxrInputButtons.Joystick2)
             {
-                return false;
+
             }
             else if (button == UxrInputButtons.Trigger)
             {
+                if (buttonContact == ButtonContact.Touch)
+                {
+#if ULTIMATEXR_UNITY_XR_OCULUS
+                    if (inputDevice.TryGetFeatureValue(OculusUsages.indexTouch, out bool valueTouch))
+                    {
+                        return valueTouch;
+                    }
+#endif
+                }
+
                 if (inputDevice.TryGetFeatureValue(CommonUsages.trigger, out float valueFloat))
                 {
                     // We try getting the float value first because in analog buttons like the oculus it will trigger too early with the bool version.
@@ -770,7 +843,7 @@ namespace UltimateXR.Devices.Integrations
             }
             else if (button == UxrInputButtons.Trigger2)
             {
-                return false;
+
             }
             else if (button == UxrInputButtons.Grip)
             {
@@ -806,17 +879,22 @@ namespace UltimateXR.Devices.Integrations
             {
                 if (buttonContact == ButtonContact.Press)
                 {
-                    if (inputDevice.TryGetFeatureValue(CommonUsages.thumbrest, out bool value))
+#if ULTIMATEXR_UNITY_XR_OCULUS
+                    if (inputDevice.TryGetFeatureValue(OculusUsages.thumbrest, out bool value))
                     {
                         return value;
                     }
+#endif
                 }
-                else if (buttonContact == ButtonContact.Touch)
+
+                if (buttonContact == ButtonContact.Touch)
                 {
-                    if (inputDevice.TryGetFeatureValue(CommonUsages.thumbTouch, out float floatValue))
+#if ULTIMATEXR_UNITY_XR_OCULUS
+                    if (inputDevice.TryGetFeatureValue(OculusUsages.thumbTouch, out bool value))
                     {
-                        return floatValue > 0.0f;
+                        return value;
                     }
+#endif
                 }
             }
             else if (button == UxrInputButtons.IndexCapSense)
@@ -832,7 +910,7 @@ namespace UltimateXR.Devices.Integrations
             {
             }
 
-            return false;
+            return HasButtonContactOther(handSide, button, buttonContact);
         }
 
         #endregion

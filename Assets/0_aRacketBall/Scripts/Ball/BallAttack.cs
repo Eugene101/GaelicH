@@ -17,6 +17,7 @@ public class BallAttack : State
     {
         _ballBasic.rb.AddForce(_ballBasic.hand.transform.up* _ballBasic.ballAttackSpeed * UxrAvatar.LocalAvatar.GetGrabber(UxrHandSide.Right).Velocity.magnitude);
         BallBasic.isAttacking = true;
+        _ballBasic.rb.useGravity = true;
     }
 
     public override void Exit()

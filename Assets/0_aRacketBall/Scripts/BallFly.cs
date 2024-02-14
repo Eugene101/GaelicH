@@ -6,49 +6,43 @@ using UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.Receiver.Primitives;
 
 public class BallFly : MonoBehaviour
 {
-    Rigidbody rb;
-    public float ballSpeed;
-    Vector3 lastVelocity;
-    public float speedFactor;
-    private void Start()
+    Rigidbody Rigidbody;
+    public Vector3 StartPos;
+    void Start()
     {
-        rb = GetComponent<Rigidbody>();
-
+        Rigidbody = GetComponent<Rigidbody>();
+        StartPos = transform.position;
     }
-    // Start is called before the first frame update
+    float maxVerticalDistance = 1;
+    float maxHorizontalDistance = 0.1f;
     private void OnCollisionEnter(Collision collision)
     {
-        //print("collision.name " + collision.gameObject.name);
-        //if (collision.gameObject.name == "Hand_Right")
+        //print(collision.contacts[0].normal.y);
+        //if (collision.contacts[0].normal.y < 0)
         //{
-        //    //rb.AddForce(collision.GetContact(0).normal * ballSpeed/*, ForceMode.Impulse*/);
-        //    //rb.useGravity = true;
-        //    print("Shoot");
+        //    Rigidbody.AddForce(-collision.transform.up * 5, ForceMode.Impulse);
+        //    return;
         //}
-
-        //if (ManipulationsDetectorBall.ballReleased)
-        //{
-            rb.useGravity = true;
-            float speed = lastVelocity.magnitude;
-            Vector3 direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
-           // Vector3 Refl = Vector3.Reflect(direction.normalized, collision.contacts[0].normal);
-            rb.velocity = direction * speed* speedFactor;
-            
-        //}
-        if(collision.transform.name == "Right_Hand" && !ManipulationsDetectorBall.ballGrabbed)
-        {
-
-        }
+        Vector3 D = (this.transform.position - StartPos).normalized;
+        Vector3 refl = Vector3.Reflect(D, collision.contacts[0].normal);
+        Vector3 reflectedForce = new Vector3(
+    refl.x * Mathf.Clamp(Mathf.Abs(StartPos.x - this.transform.position.x), 0f, maxHorizontalDistance),
+    refl.y * Mathf.Clamp(Mathf.Abs(StartPos.y - this.transform.position.y), 0f, maxVerticalDistance),
+    refl.z * Mathf.Clamp(Mathf.Abs(StartPos.z - this.transform.position.z), 0f, maxHorizontalDistance)
+);
+        Rigidbody.AddForce(reflectedForce * (StartPos - this.transform.position).magnitude, ForceMode.Impulse);
     }
-
-    private void Update()
+    void Update()
     {
-        lastVelocity = rb.velocity;
+
+
+        Vector3 reflectedForce = new Vector3(
+    Rigidbody.velocity.x * Mathf.Clamp(Mathf.Abs(StartPos.x - this.transform.position.x), 0f, maxHorizontalDistance),
+    Rigidbody.velocity.y,
+     Rigidbody.velocity.z * Mathf.Clamp(Mathf.Abs(StartPos.z - this.transform.position.z), 0f, maxHorizontalDistance)
+);
+
+
+        Rigidbody.velocity = reflectedForce;
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    print("other.name " +  other.name);
-
-    //}
 }

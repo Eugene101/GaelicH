@@ -6,7 +6,7 @@
 using System;
 using UltimateXR.Devices.Integrations.SteamVR;
 
-namespace UltimateXR.Devices.Integrations.Oculus
+namespace UltimateXR.Devices.Integrations.Meta
 {
     /// <summary>
     ///     Tracking for Oculus Touch controllers using SteamVR SDK.

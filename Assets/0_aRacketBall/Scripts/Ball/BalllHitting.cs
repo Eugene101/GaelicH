@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class BallHitting : State
@@ -12,10 +13,7 @@ public class BallHitting : State
 
     public override void Enter()
     {
-        
         BallBasic.isHitting = true;
-        _ballBasic.rb.velocity = Vector3.Reflect(_ballBasic.rb.velocity, -Vector3.up);
-        //_ballBasic.rb.velocity = Vector3.zero;
     }
 
     public override void Exit()
@@ -25,6 +23,18 @@ public class BallHitting : State
 
     public override void Update()
     {
-
+        //if (BallBasic.isHitting)
+        //{
+        //    _ballBasic.rb.velocity = Vector3.zero;
+        //    _ballBasic.rb.angularVelocity = Vector3.zero;
+        //    _ballBasic.transform.position = Vector3.Slerp(_ballBasic.transform.position, _ballBasic.hand.transform.position, 0.05f);
+        //    var dist = Vector3.Distance(_ballBasic.transform.position, _ballBasic.hand.transform.position);
+        //    if (dist <= 0.2f)
+        //    {
+        //        BallBasic.isHitting = false;
+        //        _ballBasic.Idle();
+        //    }
+        //}
+        _ballBasic.rb.velocity *= _ballBasic.velocityCoeff;
     }
 }
