@@ -27,6 +27,10 @@ public class BallAttack : State
 
     public override void Update()
     {
+        //if (_ballBasic.transform.position.y >= _ballBasic.stop.position.y)
+        //{
+        //    _ballBasic.transform.position = new Vector3 (_ballBasic.transform.position.x,_ballBasic.stop.position.y, _ballBasic.transform.position.z);
+        //}
         
     }
 }

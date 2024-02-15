@@ -26,12 +26,17 @@ public class BallBasic : MonoBehaviour
     public static bool iCanSpawnBall = true;
     public Transform ballServeposition;
     public Vector3 ballGroundposition;
+    public Vector3 prevvel;
+    public Vector3 refelct;
+    public Vector3 direction;
+    public Transform stop;
     public float ballAttackSpeed;
     // Start is called before the first frame update
     public float bounceSpeed = 5f; // Adjust this value to change the bounce speed
     public float amplitude = 1f;
     public float groundBounce;
     [Range(0, 0.9f)] public float velocityCoeff;
+    public bool IsTouchWall;
     public Vector3 initialPosition;
     void Start()
     {
@@ -59,8 +64,11 @@ public class BallBasic : MonoBehaviour
         {
 
         }
-
-        else if (isServing && collision.gameObject.name == "Hand_Right" && !RayfromHand.isHandOnGround)
+        if (collision.transform.name == "WALL1")
+        {
+            IsTouchWall = true;
+        }
+        else if (/*isServing &&*/ collision.gameObject.name == "Hand_Right" && !RayfromHand.isHandOnGround)
         {
             stateMachine.ChangeState(new BallAttack(this));
             isServing = false;
@@ -84,13 +92,32 @@ public class BallBasic : MonoBehaviour
             stateMachine.Intialize(new BallHitting(this));
             isAttacking = false;
             isHitting = true;
+            Vector3 dir = prevvel - collision.contacts[0].point;
+            refelct = Vector3.Reflect(dir, collision.contacts[0].normal);
+            direction = hand.transform.position - transform.position;
+            direction.x = 0;
+            direction.y = 0;
+
         }
 
 
     }
+
     private void Update()
     {
         stateMachine.currentState.Update();
+        prevvel = rb.velocity;
+        print("Vasyavel" + rb.velocity.magnitude);
+
+        
+        //Vector3 direction = hand.transform.position - transform.position;
+        //Vector3 vel = rb.velocity;
+        //vel.x = Mathf.Clamp(vel.x, 0f, 2);
+        //vel.y = Mathf.Clamp(vel.x, 0f, 2);
+        ////direction.z = 0f;
+        //rb.velocity = vel;
+        //direction.x = Mathf.Clamp(direction.x, -5, 5);
+        // rb.AddForce(direction * 0.01f);
 
         if (UxrAvatar.LocalAvatarInput.GetButtonsPressDown(UxrHandSide.Right, UxrInputButtons.Button1) && iCanSpawnBall)
         {
@@ -102,6 +129,7 @@ public class BallBasic : MonoBehaviour
         {
             stateMachine.ChangeState(new BallIdle(this));
             Invoke("CoolDown", 0.2f);
+            IsTouchWall = false;
         }
     }
 
