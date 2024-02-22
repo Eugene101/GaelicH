@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RayfromHand : MonoBehaviour
 {
     public static bool isHandOnGround;
-       private void OnTriggerEnter(Collider other)
+    public GameObject sphereTest;
+    
+    private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Ground")
         {
@@ -16,6 +16,7 @@ public class RayfromHand : MonoBehaviour
         {
             isHandOnGround = false;
         }
+
     }
     private void OnTriggerExit(Collider other)
     {
@@ -24,4 +25,7 @@ public class RayfromHand : MonoBehaviour
             isHandOnGround = false;
         }
     }
+
+
+
 }

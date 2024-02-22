@@ -24,9 +24,12 @@ public class BallServe : State
         _ballBasic.rb.isKinematic = false;
         BallBasic.ballDirectionDown = true;
         _ballBasic.initialPosition = _ballBasic.transform.position;
+        _ballBasic.addZ = false;
+        _ballBasic.rmZ = false;
+
     }
 
-    public override void Exit()
+public override void Exit()
     {
         BallBasic.isServing = false;
 

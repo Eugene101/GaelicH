@@ -1,12 +1,18 @@
+using Oculus.Interaction;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class BallHitting : State
 {
     BallBasic _ballBasic;
+    Vector3 delta;
+    Vector3 newPos;
     public BallHitting(BallBasic ballBasic)
     {
         _ballBasic = ballBasic;
@@ -15,45 +21,38 @@ public class BallHitting : State
     public override void Enter()
     {
         BallBasic.isHitting = true;
-        _ballBasic.rb.AddForce((_ballBasic.direction + _ballBasic.refelct) * 0.009f, ForceMode.Impulse);
+
+        
+        Vector3 dir = (_ballBasic.hitAssistDot.transform.position - _ballBasic.transform.position);
+        dir.x = _ballBasic.rb.velocity.x;
+
+        _ballBasic.rb.velocity = dir.normalized + new Vector3(0, _ballBasic.floorBounceyUpForce, 0);
+
+
+
     }
 
     public override void Exit()
     {
         BallBasic.isHitting = false;
     }
-    
+
     public override void Update()
     {
-        Debug.Log("aaaaaaaaaaaaaaaaaaaaaaaa");
-        var dist = Vector3.Distance(_ballBasic.transform.position, _ballBasic.hand.transform.position);
-        //if (BallBasic.isHitting)
-        //{
-        //    _ballBasic.rb.velocity = Vector3.zero;
-        //    _ballBasic.rb.angularVelocity = Vector3.zero;
-        //    _ballBasic.transform.position = Vector3.Slerp(_ballBasic.transform.position, _ballBasic.hand.transform.position, 0.05f);
-        //    var dist = Vector3.Distance(_ballBasic.transform.position, _ballBasic.hand.transform.position);
-        //    if (dist <= 0.2f)
-        //    {
-        //        BallBasic.isHitting = false;
-        //        _ballBasic.Idle();
-        //    }
-        //}
-        //_ballBasic.rb.velocity *= _ballBasic.velocityCoeff;
+        Debug.Log("aaaaaaaaaaaaaaaaaaaaaaaa" + _ballBasic.rb.velocity.magnitude);
 
-        //Vector3 direction = _ballBasic.hand.transform.position - _ballBasic.transform.position;
+        float delta = _ballBasic.transform.position.x - _ballBasic.hand.transform.position.x;
+        _ballBasic.rb.AddForce(delta*Time.deltaTime, 0f, _ballBasic.maxvelocity * Time.deltaTime);
+        _ballBasic.rb.velocity = new Vector3(_ballBasic.rb.velocity.x, _ballBasic.rb.velocity.y, _ballBasic.toPlayer);
 
-        ////direction.z = 0f;
-        //direction.x = Mathf.Clamp(direction.x, -5, 5);
-        //_ballBasic.rb.AddForce(direction * 0.01f);
-        // _ballBasic.rb.velocity = _ballBasic.rb.velocity * Time.deltaTime * 5;
-        //Vector3 clamp = _ballBasic.rb.velocity;
-        //clamp.y = Mathf.Clamp(clamp.y, clamp.y, 4);
-        //_ballBasic.rb.velocity = clamp;
-        //if (_ballBasic.rb.velocity.magnitude > 5f && dist<5f)
+        //if (_ballBasic.rb.velocity.magnitude > _ballBasic.maxvelocity)
         //{
-        //    _ballBasic.rb.velocity = Vector3.zero;
+        //    _ballBasic.rb.velocity*=0.8f;
         //}
 
+        //if (_ballBasic.rb.velocity.magnitude < _ballBasic.minvelocity)
+        //{
+        //    _ballBasic.rb.velocity *= 1.1f;
+        //}
     }
 }
