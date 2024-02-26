@@ -12,7 +12,6 @@ public class BallBasic : MonoBehaviour
     public GameObject hand;
     public GameObject player;
     public GameObject wall;
-    Vector3 lastVelocity;
     public float speedFactor;
     public Rigidbody rb;
     public static bool isServing;
@@ -26,7 +25,7 @@ public class BallBasic : MonoBehaviour
     public static bool ballDirectionDown;
     public GameObject corridorY1;
     public GameObject corridorY2;
-    [SerializeField] Transform ballPoint;
+    //[SerializeField] Transform ballPoint;
     public float ballServeSpeed = 0.1f;
     public static bool iCanSpawnBall = true;
     public Transform ballServeposition;
@@ -97,7 +96,8 @@ public class BallBasic : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (isServing && collision.gameObject.name == "Hand_Right" && RayfromHand.isHandOnGround)
+        print (collision.gameObject.name);
+        if (isServing && collision.gameObject.name == "Wrist_Right" && RayfromHand.isHandOnGround)
         {
 
         }
@@ -124,7 +124,7 @@ public class BallBasic : MonoBehaviour
             stateMachine.ChangeState(new BallWall(this));
 
         }
-        else if (/*isServing &&*/ collision.gameObject.name == "Hand_Right" && !RayfromHand.isHandOnGround)
+        else if (/*isServing &&*/ collision.gameObject.name == "Wrist_Right" /*&&*/ /*!RayfromHand.isHandOnGround*/)
         {
             ContactPoint contact = collision.contacts[0];
             Vector3 direction = contact.point - transform.position;
@@ -144,7 +144,7 @@ public class BallBasic : MonoBehaviour
         }
 
 
-        else if (isAttacking && collision.gameObject.name == "Hand_Right")
+        else if (isAttacking && collision.gameObject.name == "Wrist_Right")
         {
             //ContactPoint cp = collision.contacts[0];
             //Vector3 testvector = Vector3.Reflect(cp.normal, Vector3.forward);
