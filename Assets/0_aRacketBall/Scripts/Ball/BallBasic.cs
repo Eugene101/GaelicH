@@ -4,6 +4,7 @@ using UltimateXR.Avatar;
 using UltimateXR.Core;
 using UltimateXR.Devices;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class BallBasic : MonoBehaviour
 {
@@ -96,8 +97,8 @@ public class BallBasic : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        print (collision.gameObject.name);
-        if (isServing && collision.gameObject.name == "Wrist_Right" && RayfromHand.isHandOnGround)
+        print ("collided with: " + collision.gameObject.name);
+        if (isServing && collision.gameObject.name == "PlayerHandRight" && RayfromHand.isHandOnGround)
         {
 
         }
@@ -124,7 +125,7 @@ public class BallBasic : MonoBehaviour
             stateMachine.ChangeState(new BallWall(this));
 
         }
-        else if (/*isServing &&*/ collision.gameObject.name == "Wrist_Right" /*&&*/ /*!RayfromHand.isHandOnGround*/)
+        else if (/*isServing &&*/ collision.gameObject.name == "PlayerHandRight" /*&&*/ /*!RayfromHand.isHandOnGround*/)
         {
             ContactPoint contact = collision.contacts[0];
             Vector3 direction = contact.point - transform.position;
@@ -144,7 +145,7 @@ public class BallBasic : MonoBehaviour
         }
 
 
-        else if (isAttacking && collision.gameObject.name == "Wrist_Right")
+        else if (isAttacking && collision.gameObject.name == "PlayerHandRight")
         {
             //ContactPoint cp = collision.contacts[0];
             //Vector3 testvector = Vector3.Reflect(cp.normal, Vector3.forward);
@@ -189,13 +190,13 @@ public class BallBasic : MonoBehaviour
         //direction.x = Mathf.Clamp(direction.x, -5, 5);
         // rb.AddForce(direction * 0.01f);
 
-        if (UxrAvatar.LocalAvatarInput.GetButtonsPressDown(UxrHandSide.Right, UxrInputButtons.Button1) && iCanSpawnBall)
+        if (Input.GetKeyDown(KeyCode.JoystickButton0) && iCanSpawnBall)
         {
             Serve();
             Invoke("CoolDown", 0.2f);
         }
 
-        if (UxrAvatar.LocalAvatarInput.GetButtonsPressDown(UxrHandSide.Right, UxrInputButtons.Button2) && iCanSpawnBall)
+        if (Input.GetKeyDown(KeyCode.JoystickButton1) && iCanSpawnBall)
         {
             stateMachine.ChangeState(new BallIdle(this));
             Invoke("CoolDown", 0.2f);
