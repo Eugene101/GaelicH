@@ -12,14 +12,18 @@ public class OppFollow1 : State
     }
     public override void Enter()
     {
-        _oppBase.transform.position = _oppBase.oppStartPoint.position;
+        OppBase.oppIsFollowing1 = true;
+
     }
     public override void Exit()
     {
-
+        OppBase.oppIsFollowing1 = false;
     }
+
     public override void Update()
     {
-
+        _oppBase.testSphere.transform.position =new Vector3(_oppBase.ballBasic.transform.position.x, _oppBase.wall.transform.position.y, _oppBase.wall.transform.position.z);
+        _oppBase.transform.LookAt(_oppBase.testSphere.transform.position);
+        _oppBase.transform.position += -Vector3.forward * _oppBase.speed*Time.deltaTime;
     }
 }

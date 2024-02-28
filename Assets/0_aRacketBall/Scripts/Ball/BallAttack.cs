@@ -23,24 +23,25 @@ public class BallAttack : State
         //Vector3 directionToObject = _ballBasic.transform.position - _ballBasic.hand.transform.position;
         //float angle = Vector3.Angle(_ballBasic.hand.transform.forward, directionToObject);
         //Debug.Log("angle " + angle);
-        
+
 
         if (_ballBasic.goLeft)
         {
-             xshift = Random.Range(2f, 4f);
+            xshift = Random.Range(1f, 2f);
         }
         else if (_ballBasic.goRight)
         {
-            xshift = Random.Range(-2f, -4f);
+            xshift = Random.Range(-1f, -2f);
         }
 
-        float power = UxrAvatar.LocalAvatar.GetGrabber(UxrHandSide.Right).Velocity.magnitude;
+        float power = _ballBasic.RightControllerVelocity.magnitude;
+        Debug.Log("power: " + power);
 
-        if (power>6)
+        if (power > 2f)
         {
-            yshift = 1f;
+            yshift = -1f;
 
-            if (xshift<0) 
+            if (xshift < 0)
             {
                 xshift += (-1);
             }
@@ -51,13 +52,13 @@ public class BallAttack : State
             }
         }
 
-        else if (power<4) 
+        else if (power < 1.5f)
         {
-            yshift = -1f;
+            yshift = -2f;
         }
 
-        _ballBasic.rb.velocity = dir.normalized * _ballBasic.ballAttackSpeed * UxrAvatar.LocalAvatar.GetGrabber(UxrHandSide.Right).Velocity.magnitude + new Vector3(xshift, _ballBasic.attackUpForce+yshift, 0);
-        Debug.Log("xshift:" + xshift + " "+  _ballBasic.rb.velocity + " " + UxrAvatar.LocalAvatar.GetGrabber(UxrHandSide.Right).Velocity.magnitude);
+        _ballBasic.rb.velocity = dir.normalized * _ballBasic.ballAttackSpeed * power + new Vector3(xshift, _ballBasic.attackUpForce + yshift, 0);
+        Debug.Log("xshift:" + xshift + " " + _ballBasic.rb.velocity + " " + power);
         //_ballBasic.rb.AddForce(_ballBasic.hand.transform.up * _ballBasic.ballAttackSpeed * UxrAvatar.LocalAvatar.GetGrabber(UxrHandSide.Right).Velocity.magnitude);
         BallBasic.isAttacking = true;
         _ballBasic.rb.useGravity = true;
@@ -75,7 +76,6 @@ public class BallAttack : State
 
     public override void Update()
     {
-       
 
         if (_ballBasic.rb.velocity.magnitude > _ballBasic.serveVelocity)
         {

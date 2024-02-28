@@ -8,13 +8,14 @@ using UnityEngine;
 public class RoundManager : MonoBehaviour
 {
     [SerializeField] GameObject ball;
-    public static bool isPlayerTurn = true;
-
+    GameObject opponent;
     BallBasic ballBasic;
-
+    OppBase oppBase;
+    public static bool isPlayerTurn = true;
     void Start()
     {
         ballBasic = ball.GetComponent<BallBasic>();
+        oppBase = GameObject.Find("Opponent").GetComponent<OppBase>();
     }
 
     // Update is called once per frame
@@ -29,7 +30,7 @@ public class RoundManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        
+
 
     }
 }

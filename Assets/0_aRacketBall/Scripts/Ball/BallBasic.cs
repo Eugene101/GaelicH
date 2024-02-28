@@ -5,6 +5,7 @@ using UltimateXR.Core;
 using UltimateXR.Devices;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR;
 
 public class BallBasic : MonoBehaviour
 {
@@ -75,11 +76,21 @@ public class BallBasic : MonoBehaviour
     public float wTouch;
 
     public float toPlayer;
+
+    public Vector3 LeftControllerVelocity;
+    public Vector3 RightControllerVelocity;
+
+    public GameObject Opponent;
+    OppBase oppBase;
+
     void Start()
     {
         stateMachine = new StateMachine();
         rb = GetComponent<Rigidbody>();
         stateMachine.Intialize(new BallIdle(this));
+        oppBase = GameObject.Find("Opponent").GetComponent<OppBase>();
+
+      //  previousPosition = InputTracking.GetLocalPosition(RightControllerDevice.);
     }
 
     public void Serve()
@@ -97,7 +108,7 @@ public class BallBasic : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        print ("collided with: " + collision.gameObject.name);
+        print("collided with: " + collision.gameObject.name);
         if (isServing && collision.gameObject.name == "PlayerHandRight" && RayfromHand.isHandOnGround)
         {
 
@@ -123,6 +134,7 @@ public class BallBasic : MonoBehaviour
                 WallRightTouch = false;
             }
             stateMachine.ChangeState(new BallWall(this));
+            oppBase.GoIdle();
 
         }
         else if (/*isServing &&*/ collision.gameObject.name == "PlayerHandRight" /*&&*/ /*!RayfromHand.isHandOnGround*/)
@@ -142,20 +154,10 @@ public class BallBasic : MonoBehaviour
             }
             stateMachine.ChangeState(new BallAttack(this));
             isServing = false;
+            oppBase.FollowBall1();
         }
 
 
-        else if (isAttacking && collision.gameObject.name == "PlayerHandRight")
-        {
-            //ContactPoint cp = collision.contacts[0];
-            //Vector3 testvector = Vector3.Reflect(cp.normal, Vector3.forward);
-            //rb.AddForce(hand.transform.up * ballAttackSpeed * UxrAvatar.LocalAvatar.GetGrabber(UxrHandSide.Right).Velocity.magnitude);
-            //rb.AddForce(testvector*-10f);
-            //print("testvecor: " + testvector);
-            //rb.velocity = Vector3.Reflect(lastVelocity * (-500), cp.normal);
-
-
-        }
 
         else if (isWall && collision.gameObject.tag.Contains("Ground"))
         {
@@ -178,17 +180,7 @@ public class BallBasic : MonoBehaviour
     {
         stateMachine.currentState.Update();
         prevvel = rb.velocity;
-
-
-
-        //Vector3 direction = hand.transform.position - transform.position;
-        //Vector3 vel = rb.velocity;
-        //vel.x = Mathf.Clamp(vel.x, 0f, 2);
-        //vel.y = Mathf.Clamp(vel.x, 0f, 2);
-        ////direction.z = 0f;
-        //rb.velocity = vel;
-        //direction.x = Mathf.Clamp(direction.x, -5, 5);
-        // rb.AddForce(direction * 0.01f);
+        UpdateInput();
 
         if (Input.GetKeyDown(KeyCode.JoystickButton0) && iCanSpawnBall)
         {
@@ -202,6 +194,21 @@ public class BallBasic : MonoBehaviour
             Invoke("CoolDown", 0.2f);
             IsTouchWall = false;
         }
+    }
+    Vector3 Prevpos = Vector3.zero;
+    Vector3 CurrentPos;
+   public void UpdateInput()
+    {
+        //LeftControllerDevice.TryGetFeatureValue(CommonUsages.deviceVelocity, out LeftControllerVelocity);
+        //RightControllerDevice.TryGetFeatureValue(CommonUsages.deviceVelocity, out RightControllerVelocity);
+        //print("LeftControllerVelocity: " + LeftControllerVelocity);
+        //print("RightControllerVelocity: " + RightControllerVelocity);
+        InputDevices.GetDeviceAtXRNode(XRNode.LeftHand).TryGetFeatureValue(CommonUsages.deviceVelocity, out LeftControllerVelocity);
+        InputDevices.GetDeviceAtXRNode(XRNode.RightHand).TryGetFeatureValue(CommonUsages.deviceVelocity, out RightControllerVelocity);
+        print(LeftControllerVelocity.magnitude +" " + RightControllerVelocity.magnitude + " magnitude");
+        //CurrentPos = InputTracking.GetLocalPosition(XRNode.LeftHand) - Prevpos;
+        //print(CurrentPos.magnitude);
+        //Prevpos = InputTracking.GetLocalPosition(XRNode.LeftHand);
     }
 
     void CoolDown()
