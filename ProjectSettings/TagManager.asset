@@ -23,6 +23,7 @@ TagManager:
   - TeamMateBorders
   - Racket
   - SamplesInfoPanel
+  - Opponent
   layers:
   - Default
   - TransparentFX

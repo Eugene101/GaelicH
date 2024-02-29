@@ -1,6 +1,7 @@
 using System.Collections;
 using System;
 using UnityEngine;
+using Unity.VisualScripting.FullSerializer;
 
 public class OppFollow1 : State
 {
@@ -16,6 +17,7 @@ public class OppFollow1 : State
     public override void Enter()
     {
         _oppBase.oppStatus = OppBase.OppStatus.oppIsFollowing1;
+        Debug.Log("I follow ball");
         randZshift = UnityEngine.Random.Range(-1.5f, 1.5f);
         if (_oppBase.transform.position.z < _oppBase.centreOfGround.position.z)
         {

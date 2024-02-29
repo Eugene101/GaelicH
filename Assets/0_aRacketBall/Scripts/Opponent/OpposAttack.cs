@@ -13,6 +13,7 @@ public class OpposAttack : State
     }
     public override void Enter()
     {
+        Debug.Log("I attack ball 2");
         _oppBase.oppStatus = OppBase.OppStatus.oppIsAttacking;
         iCanGo = true;
     }
@@ -28,7 +29,13 @@ public class OpposAttack : State
         {
             _oppBase.testSphere.transform.position = new Vector3(_oppBase.ballBasic.transform.position.x, _oppBase.wall.transform.position.y, _oppBase.wall.transform.position.z);
             _oppBase.transform.LookAt(_oppBase.testSphere.transform.position);
-            _oppBase.transform.position += Vector3.forward * _oppBase.speed * Time.deltaTime;
+            _oppBase.transform.position += -Vector3.forward * _oppBase.speed * Time.deltaTime;
         }
+
+        if (dist<=0.2f)
+        {
+            iCanGo = false;
+        }
+
     }
 }

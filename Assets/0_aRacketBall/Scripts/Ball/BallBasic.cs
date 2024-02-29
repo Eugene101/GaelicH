@@ -75,7 +75,7 @@ public class BallBasic : MonoBehaviour
 
     public enum BallPlayerStatus
     {
-        isServing, isAttacking, isIdle, isWall, isHitting
+        isServing, isAttacking, isIdle, isWall, isHitting, isAttackOppo, isServeOppo
     }
 
     public BallPlayerStatus status;
@@ -111,7 +111,7 @@ public class BallBasic : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        print("collided with: " + collision.gameObject.name);
+        //print("collided with: " + collision.gameObject.name);
 
         if (collision.gameObject.name == "PlayerHandRight")
         {
@@ -129,6 +129,7 @@ public class BallBasic : MonoBehaviour
                 goLeft = false;
             }
             stateMachine.ChangeState(new BallAttack(this));
+            roundManager.PlayerAttacking();
         }
 
 
@@ -138,6 +139,8 @@ public class BallBasic : MonoBehaviour
             //IsTouchWall = true;
             ContactPoint contact = collision.contacts[0];
             wallTouchPosition = contact.point - wall.transform.position;
+            roundManager.PlayerHit();
+            roundManager.PlayerWall();
 
             //wTouch = Vector3.Dot(wallTouchPosition, transform.right);
 
@@ -169,6 +172,11 @@ public class BallBasic : MonoBehaviour
             direction.y = 0;
         }
 
+        else if (collision.gameObject.tag.Contains("Opponent"))
+        {
+            stateMachine.ChangeState(new BallAttackOppo(this));
+        }
+
 
     }
 
@@ -194,7 +202,7 @@ public class BallBasic : MonoBehaviour
 
     public void UpdateInput()
     {
- 
+
         InputDevices.GetDeviceAtXRNode(XRNode.LeftHand).TryGetFeatureValue(CommonUsages.deviceVelocity, out LeftControllerVelocity);
         InputDevices.GetDeviceAtXRNode(XRNode.RightHand).TryGetFeatureValue(CommonUsages.deviceVelocity, out RightControllerVelocity);
         //print(LeftControllerVelocity.magnitude + " " + RightControllerVelocity.magnitude + " magnitude");

@@ -43,6 +43,11 @@ public class OppBase : MonoBehaviour
         stateMachine.Intialize(new OpposIdle(this));
     }
 
+    public void Attack()
+    {
+        stateMachine.Intialize(new OpposAttack(this));
+    }
+
     private void Update()
     {
         stateMachine.currentState.Update();

@@ -30,7 +30,7 @@ public class BallAttack : State
         }
 
         float power = _ballBasic.RightControllerVelocity.magnitude;
-        Debug.Log("power: " + power);
+        //Debug.Log("power: " + power);
 
         if (power > 1.8f)
         {

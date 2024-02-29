@@ -8120,12 +8120,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f466198710b3c14fa9b2c7b72dfce8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 1.1
   oppStartPoint: {fileID: 446287594}
   ballBasic: {fileID: 1221034580}
   wall: {fileID: 1442227905}
   testSphere: {fileID: 176593178}
-  centreOfGround: {fileID: 0}
+  centreOfGround: {fileID: 600154292}
   oppStatus: 0
 --- !u!4 &1476059585 stripped
 Transform:

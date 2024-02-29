@@ -34,7 +34,7 @@ public class RoundManager : MonoBehaviour
 
     public void PlayerAttacking()
     {
-        oppBase.FollowBall1();
+        //oppBase.FollowBall1();
     }
 
     public void PlayerIdle()
@@ -44,12 +44,12 @@ public class RoundManager : MonoBehaviour
 
     public void PlayerHit()
     {
-
+        //oppBase.Attack();
     }
 
     public void PlayerWall()
     {
-
+        //oppBase.GoIdle();
     }
 
     // Update is called once per frame
