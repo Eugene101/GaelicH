@@ -20,18 +20,15 @@ public class BallServe : State
 
     public override void Enter()
     {
-        BallBasic.isServing = true;
+        _ballBasic.status = BallBasic.BallPlayerStatus.isServing;
         _ballBasic.rb.isKinematic = false;
         BallBasic.ballDirectionDown = true;
         _ballBasic.initialPosition = _ballBasic.transform.position;
-        _ballBasic.addZ = false;
-        _ballBasic.rmZ = false;
-
     }
 
 public override void Exit()
     {
-        BallBasic.isServing = false;
+        
 
     }
 

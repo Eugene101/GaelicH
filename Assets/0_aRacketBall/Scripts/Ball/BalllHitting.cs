@@ -20,29 +20,23 @@ public class BallHitting : State
 
     public override void Enter()
     {
-        BallBasic.isHitting = true;
-
-        
+        _ballBasic.status = BallBasic.BallPlayerStatus.isHitting;
         Vector3 dir = (_ballBasic.hitAssistDot.transform.position - _ballBasic.transform.position);
         dir.x = _ballBasic.rb.velocity.x;
-
         _ballBasic.rb.velocity = dir.normalized + new Vector3(0, _ballBasic.floorBounceyUpForce, 0);
-
-
-
     }
 
     public override void Exit()
     {
-        BallBasic.isHitting = false;
+
     }
 
     public override void Update()
     {
-        Debug.Log("aaaaaaaaaaaaaaaaaaaaaaaa" + _ballBasic.rb.velocity.magnitude);
+        //Debug.Log("aaaaaaaaaaaaaaaaaaaaaaaa" + _ballBasic.rb.velocity.magnitude);
 
         float delta = _ballBasic.transform.position.x - _ballBasic.hand.transform.position.x;
-        _ballBasic.rb.AddForce(delta*Time.deltaTime, 0f, _ballBasic.maxvelocity * Time.deltaTime);
+        _ballBasic.rb.AddForce(delta * Time.deltaTime, 0f, _ballBasic.maxvelocity * Time.deltaTime);
         _ballBasic.rb.velocity = new Vector3(_ballBasic.rb.velocity.x, _ballBasic.rb.velocity.y, _ballBasic.toPlayer);
 
         //if (_ballBasic.rb.velocity.magnitude > _ballBasic.maxvelocity)

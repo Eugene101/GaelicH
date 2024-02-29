@@ -13,16 +13,16 @@ public class OppBase : MonoBehaviour
     //protected enum superForce { cube, triangle};
     public Transform oppStartPoint;
     public BallBasic ballBasic;
-
-    public static bool oppIsServing;
-    public static bool oppIsAttacking;
-    public static bool oppIsIdle;
-    public static bool oppIsHitting;
-    public static bool oppIsWall;
-    public static bool oppIsFollowing1;
-
     public GameObject wall;
     public GameObject testSphere;
+    public Transform centreOfGround;
+
+    public enum OppStatus
+    {
+        oppIsServing, oppIsAttacking, oppIsIdle, oppIsHitting, oppIsWall, oppIsFollowing1
+    }
+
+    public OppStatus oppStatus;
 
     private void Start()
     {

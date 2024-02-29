@@ -16,12 +16,6 @@ public class BallBasic : MonoBehaviour
     public GameObject wall;
     public float speedFactor;
     public Rigidbody rb;
-    public static bool isServing;
-    public static bool isAttacking;
-    public static bool isIdle;
-    public static bool isHitting;
-    public static bool isWall;
-
     public static bool returnBall;
     public static bool ballDirectionUp;
     public static bool ballDirectionDown;
@@ -40,9 +34,9 @@ public class BallBasic : MonoBehaviour
     // Start is called before the first frame update
     public float bounceSpeed = 5f; // Adjust this value to change the bounce speed
     public float amplitude = 1f;
-    [Range(0, 0.9f)] public float velocityCoeff;
-    [Range(0, 1)] public float velocityUpCoeffBpunce;
-    public bool IsTouchWall;
+    //[Range(0, 0.9f)] public float velocityCoeff;
+    //[Range(0, 1)] public float velocityUpCoeffBpunce;
+    //public bool IsTouchWall;
     public Vector3 initialPosition;
     public Vector3 wallTouchPosition;
 
@@ -56,41 +50,50 @@ public class BallBasic : MonoBehaviour
     public Transform hitAssistDot;
     public Transform hitAssistDot1;
 
-    public GameObject TestSpere;
     public GameObject floor;
     public bool raycastCheck;
     public bool runAfterHit;
 
-    public bool runAfterHitDown;
-    public bool runAfterHitUp;
+    //public bool runAfterHitDown;
+    //public bool runAfterHitUp;
 
-    public bool addZ;
-    public bool rmZ;
+    //public bool addZ;
+    //public bool rmZ;
 
     public bool goLeft;
     public bool goRight;
 
-    public bool WallLeftTouch;
-    public bool WallRightTouch;
+    //public bool WallLeftTouch;
+    //public bool WallRightTouch;
 
-    public float wTouch;
+    //public float wTouch;
 
     public float toPlayer;
 
     public Vector3 LeftControllerVelocity;
     public Vector3 RightControllerVelocity;
 
-    public GameObject Opponent;
-    OppBase oppBase;
+    public enum BallPlayerStatus
+    {
+        isServing, isAttacking, isIdle, isWall, isHitting
+    }
+
+    public BallPlayerStatus status;
+
+    [SerializeField] GameObject roundManagerHolder;
+    RoundManager roundManager;
+
+
 
     void Start()
     {
         stateMachine = new StateMachine();
         rb = GetComponent<Rigidbody>();
         stateMachine.Intialize(new BallIdle(this));
-        oppBase = GameObject.Find("Opponent").GetComponent<OppBase>();
+        roundManager = roundManagerHolder.GetComponent<RoundManager>();
+        //oppBase = GameObject.Find("Opponent").GetComponent<OppBase>();
 
-      //  previousPosition = InputTracking.GetLocalPosition(RightControllerDevice.);
+        //  previousPosition = InputTracking.GetLocalPosition(RightControllerDevice.);
     }
 
     public void Serve()
@@ -109,35 +112,8 @@ public class BallBasic : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         print("collided with: " + collision.gameObject.name);
-        if (isServing && collision.gameObject.name == "PlayerHandRight" && RayfromHand.isHandOnGround)
-        {
 
-        }
-        if (collision.transform.name == "WALL1")
-        {
-            IsTouchWall = true;
-            ContactPoint contact = collision.contacts[0];
-            wallTouchPosition = contact.point - wall.transform.position;
-            print("wallTouchPosition " + Vector3.Dot(wallTouchPosition, transform.right));
-
-            wTouch = Vector3.Dot(wallTouchPosition, transform.right);
-
-            if (wTouch < 0)
-            {
-                // Apply force to the ball to the left
-                WallRightTouch = true;
-                WallLeftTouch = false;
-            }
-            else
-            {
-                WallLeftTouch = true;
-                WallRightTouch = false;
-            }
-            stateMachine.ChangeState(new BallWall(this));
-            oppBase.GoIdle();
-
-        }
-        else if (/*isServing &&*/ collision.gameObject.name == "PlayerHandRight" /*&&*/ /*!RayfromHand.isHandOnGround*/)
+        if (collision.gameObject.name == "PlayerHandRight")
         {
             ContactPoint contact = collision.contacts[0];
             Vector3 direction = contact.point - transform.position;
@@ -153,24 +129,44 @@ public class BallBasic : MonoBehaviour
                 goLeft = false;
             }
             stateMachine.ChangeState(new BallAttack(this));
-            isServing = false;
-            oppBase.FollowBall1();
         }
 
 
 
-        else if (isWall && collision.gameObject.tag.Contains("Ground"))
+        else if (collision.transform.name == "WALL1")
+        {
+            //IsTouchWall = true;
+            ContactPoint contact = collision.contacts[0];
+            wallTouchPosition = contact.point - wall.transform.position;
+
+            //wTouch = Vector3.Dot(wallTouchPosition, transform.right);
+
+            //if (wTouch < 0)
+            //{
+            //    // Apply force to the ball to the left
+            //    //WallRightTouch = true;
+            //    //WallLeftTouch = false;
+            //}
+            //else
+            //{
+            //    //WallLeftTouch = true;
+            //    //WallRightTouch = false;
+            //}
+            stateMachine.ChangeState(new BallWall(this));
+        }
+
+
+
+
+        else if (status == BallPlayerStatus.isWall && collision.gameObject.tag.Contains("Ground"))
         {
             //rb.AddForce(transform.forward * groundBounce);
             stateMachine.Intialize(new BallHitting(this));
-            isAttacking = false;
-            isHitting = true;
             Vector3 dir = prevvel - collision.contacts[0].point;
             refelct = Vector3.Reflect(dir, collision.contacts[0].normal);
             direction = hand.transform.position - transform.position;
             direction.x = 0;
             direction.y = 0;
-
         }
 
 
@@ -192,23 +188,16 @@ public class BallBasic : MonoBehaviour
         {
             stateMachine.ChangeState(new BallIdle(this));
             Invoke("CoolDown", 0.2f);
-            IsTouchWall = false;
+            //IsTouchWall = false;
         }
     }
-    Vector3 Prevpos = Vector3.zero;
-    Vector3 CurrentPos;
-   public void UpdateInput()
+
+    public void UpdateInput()
     {
-        //LeftControllerDevice.TryGetFeatureValue(CommonUsages.deviceVelocity, out LeftControllerVelocity);
-        //RightControllerDevice.TryGetFeatureValue(CommonUsages.deviceVelocity, out RightControllerVelocity);
-        //print("LeftControllerVelocity: " + LeftControllerVelocity);
-        //print("RightControllerVelocity: " + RightControllerVelocity);
+ 
         InputDevices.GetDeviceAtXRNode(XRNode.LeftHand).TryGetFeatureValue(CommonUsages.deviceVelocity, out LeftControllerVelocity);
         InputDevices.GetDeviceAtXRNode(XRNode.RightHand).TryGetFeatureValue(CommonUsages.deviceVelocity, out RightControllerVelocity);
-        print(LeftControllerVelocity.magnitude +" " + RightControllerVelocity.magnitude + " magnitude");
-        //CurrentPos = InputTracking.GetLocalPosition(XRNode.LeftHand) - Prevpos;
-        //print(CurrentPos.magnitude);
-        //Prevpos = InputTracking.GetLocalPosition(XRNode.LeftHand);
+        //print(LeftControllerVelocity.magnitude + " " + RightControllerVelocity.magnitude + " magnitude");
     }
 
     void CoolDown()

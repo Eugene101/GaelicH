@@ -3852,6 +3852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 1221034575}
+  whoTouchLast: 0
 --- !u!4 &517289901
 Transform:
   m_ObjectHideFlags: 0
@@ -4226,6 +4227,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 556831602}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &600154291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 600154292}
+  m_Layer: 0
+  m_Name: CentreOfGround
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &600154292
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600154291}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.026287317, y: 0.32600522, z: -0.18147941}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1726915770}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &607357359
 GameObject:
   m_ObjectHideFlags: 0
@@ -7796,9 +7828,6 @@ MonoBehaviour:
   ballAttackSpeed: 5
   bounceSpeed: 2
   amplitude: 1.5
-  velocityCoeff: 0.9
-  velocityUpCoeffBpunce: 0
-  IsTouchWall: 0
   initialPosition: {x: 0, y: 0, z: 0}
   wallTouchPosition: {x: 0, y: 0, z: 0}
   minvelocity: 6
@@ -7810,23 +7839,16 @@ MonoBehaviour:
   serveAssistDot: {fileID: 1131828504}
   hitAssistDot: {fileID: 2024146973}
   hitAssistDot1: {fileID: 0}
-  TestSpere: {fileID: 176593178}
   floor: {fileID: 2055442154}
   raycastCheck: 0
   runAfterHit: 0
-  runAfterHitDown: 0
-  runAfterHitUp: 0
-  addZ: 0
-  rmZ: 0
   goLeft: 0
   goRight: 0
-  WallLeftTouch: 0
-  WallRightTouch: 0
-  wTouch: 0
   toPlayer: 6
   LeftControllerVelocity: {x: 0, y: 0, z: 0}
   RightControllerVelocity: {x: 0, y: 0, z: 0}
-  Opponent: {fileID: 0}
+  status: 0
+  roundManagerHolder: {fileID: 517289899}
 --- !u!4 &1231042127 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -6341020912822561605, guid: 09efd149bb8db5e439455db14c503d13,
@@ -8103,6 +8125,8 @@ MonoBehaviour:
   ballBasic: {fileID: 1221034580}
   wall: {fileID: 1442227905}
   testSphere: {fileID: 176593178}
+  centreOfGround: {fileID: 0}
+  oppStatus: 0
 --- !u!4 &1476059585 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1642051377016094071, guid: 0ce7e6a64fb33c54ab4b8c6a1494a1cb,
@@ -8801,6 +8825,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 600154292}
   - {fileID: 446287594}
   - {fileID: 1380856459}
   - {fileID: 1047483355}
@@ -8857,7 +8882,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e5907b43e5ece3a4d9f76061e099ef10,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.763
+      value: 3.37
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e5907b43e5ece3a4d9f76061e099ef10,
         type: 3}
