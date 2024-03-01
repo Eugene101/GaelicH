@@ -16,6 +16,10 @@ public class BallWall : State
         Vector3 dir = _ballBasic.rb.velocity;
         dir.x = 0;
         _ballBasic.rb.velocity = dir;
+        //if (RoundManager.isPlayerTurn)
+        //{
+        //    dir *= 5f;
+        //}
     }
 
     public override void Exit()

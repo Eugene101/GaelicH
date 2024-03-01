@@ -8,7 +8,7 @@ public class OppFollow1 : State
     OppBase _oppBase;
     bool goingUp;
     bool iCanGo;
-    float randZshift;
+    //float randZshift;
 
     public OppFollow1(OppBase oppBase)
     {
@@ -17,43 +17,37 @@ public class OppFollow1 : State
     public override void Enter()
     {
         _oppBase.oppStatus = OppBase.OppStatus.oppIsFollowing1;
-        Debug.Log("I follow ball");
-        randZshift = UnityEngine.Random.Range(-1.5f, 1.5f);
-        if (_oppBase.transform.position.z < _oppBase.centreOfGround.position.z)
-        {
-            goingUp = false;
-        }
+        //Debug.Log("I follow ball");
+        //randZshift = UnityEngine.Random.Range(-1.5f, 1.5f);
+        //if (_oppBase.transform.position.z < _oppBase.centreOfGround.position.z)
+        //{
+        //    goingUp = false;
+        //}
 
-        else
-        {
-            goingUp = true;
-        }
+        //else
+        //{
+        //    goingUp = true;
+        //}
 
         iCanGo = true;
     
     }
     public override void Exit()
     {
-        goingUp = false;
+        iCanGo = false;
     }
 
     public override void Update()
     {
-        if (iCanGo == true && goingUp)
+        if (iCanGo == true)
         {
             _oppBase.testSphere.transform.position = new Vector3(_oppBase.ballBasic.transform.position.x, _oppBase.wall.transform.position.y, _oppBase.wall.transform.position.z);
             _oppBase.transform.LookAt(_oppBase.testSphere.transform.position);
             _oppBase.transform.position += -Vector3.forward * _oppBase.speed * Time.deltaTime;
         }
-
-        if (iCanGo == true && !goingUp)
-        {
-            _oppBase.testSphere.transform.position = new Vector3(_oppBase.ballBasic.transform.position.x, _oppBase.wall.transform.position.y, _oppBase.wall.transform.position.z);
-            _oppBase.transform.LookAt(_oppBase.testSphere.transform.position);
-            _oppBase.transform.position += Vector3.forward * _oppBase.speed * Time.deltaTime;
-        }      
+ 
         
-        if (_oppBase.transform.position.z== _oppBase.centreOfGround.position.z+ randZshift) 
+        if (_oppBase.transform.position.z== _oppBase.centreOfGround.position.z+1.4f) 
         {
             iCanGo = false;
         }

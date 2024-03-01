@@ -5,7 +5,7 @@ using UnityEngine;
 public class OpposAttack : State
 {
     OppBase _oppBase;
-    bool iCanGo;
+    bool iCanGoAttack;
 
     public OpposAttack(OppBase oppBase)
     {
@@ -13,28 +13,27 @@ public class OpposAttack : State
     }
     public override void Enter()
     {
-        Debug.Log("I attack ball 2");
         _oppBase.oppStatus = OppBase.OppStatus.oppIsAttacking;
-        iCanGo = true;
+        iCanGoAttack = true;
     }
     public override void Exit()
     {
-
+        iCanGoAttack = false;
     }
     public override void Update()
     {
         float dist = Vector3.Distance(_oppBase.transform.position, _oppBase.ballBasic.transform.position);
-
-        if (iCanGo)
+        Debug.Log ("Vasya1 " +dist);
+        if (iCanGoAttack)
         {
-            _oppBase.testSphere.transform.position = new Vector3(_oppBase.ballBasic.transform.position.x, _oppBase.wall.transform.position.y, _oppBase.wall.transform.position.z);
+            _oppBase.testSphere.transform.position = new Vector3(_oppBase.ballBasic.transform.position.x, _oppBase.transform.position.y, _oppBase.wall.transform.position.z);
             _oppBase.transform.LookAt(_oppBase.testSphere.transform.position);
-            _oppBase.transform.position += -Vector3.forward * _oppBase.speed * Time.deltaTime;
+            _oppBase.transform.position += -Vector3.forward * _oppBase.speed * 10*Time.deltaTime;
         }
 
         if (dist<=0.2f)
         {
-            iCanGo = false;
+            iCanGoAttack = false;
         }
 
     }

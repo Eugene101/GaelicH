@@ -23,7 +23,7 @@ public class BallAttackOppo : State
 
     public override void Update()
     {
-        _ballBasic.transform.LookAt(_ballBasic.wall.transform.position);
-        _ballBasic.transform.position = Vector3.forward;
+        _ballBasic.transform.LookAt(_ballBasic.wall.transform.position);          
+        _ballBasic.transform.position += -Vector3.forward*Time.deltaTime*10f;
     }
 }

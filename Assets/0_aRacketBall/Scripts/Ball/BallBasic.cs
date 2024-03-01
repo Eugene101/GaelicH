@@ -6,6 +6,7 @@ using UltimateXR.Devices;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR;
+using TMPro;
 
 public class BallBasic : MonoBehaviour
 {
@@ -56,6 +57,7 @@ public class BallBasic : MonoBehaviour
 
     //public bool runAfterHitDown;
     //public bool runAfterHitUp;
+    public TextMeshProUGUI turn;
 
     //public bool addZ;
     //public bool rmZ;
@@ -111,7 +113,7 @@ public class BallBasic : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        //print("collided with: " + collision.gameObject.name);
+        print("collided with: " + collision.gameObject.name + " tag: " + collision.gameObject.tag);
 
         if (collision.gameObject.name == "PlayerHandRight")
         {
@@ -129,7 +131,8 @@ public class BallBasic : MonoBehaviour
                 goLeft = false;
             }
             stateMachine.ChangeState(new BallAttack(this));
-            roundManager.PlayerAttacking();
+            RoundManager.isPlayerTurn = false;
+            roundManager.SignalFromBall("PlayerAttacking");
         }
 
 
@@ -139,29 +142,19 @@ public class BallBasic : MonoBehaviour
             //IsTouchWall = true;
             ContactPoint contact = collision.contacts[0];
             wallTouchPosition = contact.point - wall.transform.position;
-            roundManager.PlayerHit();
-            roundManager.PlayerWall();
 
-            //wTouch = Vector3.Dot(wallTouchPosition, transform.right);
-
-            //if (wTouch < 0)
-            //{
-            //    // Apply force to the ball to the left
-            //    //WallRightTouch = true;
-            //    //WallLeftTouch = false;
-            //}
-            //else
-            //{
-            //    //WallLeftTouch = true;
-            //    //WallRightTouch = false;
-            //}
+            if (!RoundManager.isPlayerTurn)
+            {
+                roundManager.SignalFromBall("PlayerWall");
+            }
+           
             stateMachine.ChangeState(new BallWall(this));
         }
 
 
 
 
-        else if (status == BallPlayerStatus.isWall && collision.gameObject.tag.Contains("Ground"))
+        else if (status == BallPlayerStatus.isWall && collision.gameObject.tag.Contains("Ground") && !RoundManager.isPlayerTurn)
         {
             //rb.AddForce(transform.forward * groundBounce);
             stateMachine.Intialize(new BallHitting(this));
@@ -170,20 +163,33 @@ public class BallBasic : MonoBehaviour
             direction = hand.transform.position - transform.position;
             direction.x = 0;
             direction.y = 0;
+            roundManager.SignalFromBall("PlayerHit");
         }
 
         else if (collision.gameObject.tag.Contains("Opponent"))
         {
             stateMachine.ChangeState(new BallAttackOppo(this));
+            if (!RoundManager.isPlayerTurn)
+            {
+                roundManager.SignalFromBall("GoBack");
+            }
+            RoundManager.isPlayerTurn = true;
         }
-
-
     }
 
     private void Update()
     {
         stateMachine.currentState.Update();
         prevvel = rb.velocity;
+        if (RoundManager.isPlayerTurn == true)
+        {
+            turn.text = "Player";
+        }
+
+        if (RoundManager.isPlayerTurn == false)
+        {
+            turn.text = "Opponent";
+        }
         UpdateInput();
 
         if (Input.GetKeyDown(KeyCode.JoystickButton0) && iCanSpawnBall)
@@ -195,6 +201,7 @@ public class BallBasic : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.JoystickButton1) && iCanSpawnBall)
         {
             stateMachine.ChangeState(new BallIdle(this));
+            RoundManager.isPlayerTurn = true;
             Invoke("CoolDown", 0.2f);
             //IsTouchWall = false;
         }

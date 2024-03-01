@@ -22,11 +22,11 @@ public class BallAttack : State
 
         if (_ballBasic.goLeft)
         {
-            xshift = Random.Range(1f, 2f);
+            xshift = Random.Range(0f, 2.5f);
         }
         else if (_ballBasic.goRight)
         {
-            xshift = Random.Range(-1f, -2f);
+            xshift = Random.Range(0f, -2f);
         }
 
         float power = _ballBasic.RightControllerVelocity.magnitude;
