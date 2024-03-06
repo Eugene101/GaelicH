@@ -14,10 +14,11 @@ public class OpposIdle : State
     public override void Enter()
     {
         _oppBase.oppStatus = OppBase.OppStatus.oppIsIdle;
+      
     }
     public override void Exit()
     {
-        
+        _oppBase.gameObject.GetComponent<BoxCollider>().enabled = true;
     }
     public override void Update()
     {

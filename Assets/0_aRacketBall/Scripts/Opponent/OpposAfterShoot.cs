@@ -15,13 +15,15 @@ public class OpposAfterShoot : State
     {
         Debug.Log("State is returning");
         _oppBase.oppStatus = OppBase.OppStatus.oppIsGoBack;
+        //_oppBase.boxCollider.gameObject.SetActive(false);
+       
     }
     public override void Exit()
     {
-
+        _oppBase.gameObject.GetComponent<BoxCollider>().enabled = true;
     }
     public override void Update()
     {
-        _oppBase.transform.position += Vector3.forward * _oppBase.speed * Time.deltaTime*5f;
+        _oppBase.transform.position += Vector3.forward * _oppBase.speed * Time.deltaTime*7f;
     }
 }

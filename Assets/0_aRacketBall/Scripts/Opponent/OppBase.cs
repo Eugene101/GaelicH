@@ -18,6 +18,7 @@ public class OppBase : MonoBehaviour
     public GameObject testSphere;
     public Transform centreOfGround;
     public Quaternion BasicRot;
+    public BoxCollider boxCollider;
 
     public enum OppStatus
     {
@@ -33,6 +34,7 @@ public class OppBase : MonoBehaviour
         BasicRot = transform.rotation;
         stateMachine = new StateMachine();
         stateMachine.Intialize(new OpposIdle(this));
+        boxCollider = GetComponent<BoxCollider>();
     }
 
     public void ChangeState(string managersignal)
@@ -51,11 +53,15 @@ public class OppBase : MonoBehaviour
             case "return":
                 stateMachine.Intialize(new OpposAfterShoot(this));
                 break;
+            case "idle":
+                stateMachine.Intialize(new OpposIdle(this));
+                break;
         }
     }
     private void Update()
     {
         stateMachine.currentState.Update();
+        print (oppStatus.ToString() + " oppstatus");
         if (Input.GetKeyDown(KeyCode.JoystickButton1))
         {
             stateMachine.ChangeState(new OpposIdle(this));
@@ -76,5 +82,11 @@ public class OppBase : MonoBehaviour
         }
 
         transform.position = new Vector3(transform.position.x, oppStartPoint.position.y, transform.position.z);
+
+        if (oppStatus==OppStatus.oppIsGoBack && transform.position.z>= oppStartPoint.transform.position.z+1f)
+        {
+            ChangeState("idle");
+            oppStatus = OppStatus.oppIsIdle;
+        }
     }
 }

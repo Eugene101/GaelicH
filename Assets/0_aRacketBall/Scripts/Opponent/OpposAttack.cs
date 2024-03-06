@@ -23,7 +23,7 @@ public class OpposAttack : State
     public override void Update()
     {
         float dist = Vector3.Distance(_oppBase.transform.position, _oppBase.ballBasic.transform.position);
-        Debug.Log ("Vasya1 " +dist);
+       
         if (iCanGoAttack)
         {
             _oppBase.testSphere.transform.position = new Vector3(_oppBase.ballBasic.transform.position.x, _oppBase.transform.position.y, _oppBase.wall.transform.position.z);

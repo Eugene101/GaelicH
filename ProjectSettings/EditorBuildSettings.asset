@@ -8,12 +8,15 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Stadio.unity
     guid: e389f26c5db141c49bc9b1b828de4d00
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: f56da50acf0065d47a066659f7acf17b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dodgeball.unity
     guid: 8659e63e632d8b74fb3b179788d74a65
+  - enabled: 1
+    path: Assets/Scenes/Garden.unity
+    guid: 44f6f132818b85a4b853582acf9b0720
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 6d759d5effe8b734abfc8bd78aa7cb2d,
       type: 2}

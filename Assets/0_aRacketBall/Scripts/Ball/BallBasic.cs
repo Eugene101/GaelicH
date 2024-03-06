@@ -74,6 +74,11 @@ public class BallBasic : MonoBehaviour
 
     public Vector3 LeftControllerVelocity;
     public Vector3 RightControllerVelocity;
+    
+    public Assistance assistance;
+    public float lastKickPower;
+
+    public bool amIserve = true;
 
     public enum BallPlayerStatus
     {
@@ -146,6 +151,7 @@ public class BallBasic : MonoBehaviour
             if (!RoundManager.isPlayerTurn)
             {
                 roundManager.SignalFromBall("PlayerWall");
+               
             }
            
             stateMachine.ChangeState(new BallWall(this));
@@ -154,7 +160,7 @@ public class BallBasic : MonoBehaviour
 
 
 
-        else if (status == BallPlayerStatus.isWall && collision.gameObject.tag.Contains("Ground") && !RoundManager.isPlayerTurn)
+        else if (status == BallPlayerStatus.isWall && collision.gameObject.tag.Contains("Ground") /*&& !RoundManager.isPlayerTurn*/)
         {
             //rb.AddForce(transform.forward * groundBounce);
             stateMachine.Intialize(new BallHitting(this));
@@ -163,7 +169,10 @@ public class BallBasic : MonoBehaviour
             direction = hand.transform.position - transform.position;
             direction.x = 0;
             direction.y = 0;
-            roundManager.SignalFromBall("PlayerHit");
+            if (!RoundManager.isPlayerTurn)
+            {
+                roundManager.SignalFromBall("PlayerHit");
+            }
         }
 
         else if (collision.gameObject.tag.Contains("Opponent"))
@@ -194,6 +203,7 @@ public class BallBasic : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.JoystickButton0) && iCanSpawnBall)
         {
+            amIserve = true;
             Serve();
             Invoke("CoolDown", 0.2f);
         }

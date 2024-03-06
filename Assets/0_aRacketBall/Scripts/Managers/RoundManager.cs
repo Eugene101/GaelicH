@@ -11,6 +11,7 @@ public class RoundManager : MonoBehaviour
     GameObject opponent;
     BallBasic ballBasic;
     OppBase oppBase;
+    public GameObject player;
     string managerSignal;
     public static bool isPlayerTurn = true;
     public enum WhoTouchLast
@@ -26,6 +27,7 @@ public class RoundManager : MonoBehaviour
     {
         ballBasic = ball.GetComponent<BallBasic>();
         oppBase = GameObject.Find("Opponent").GetComponent<OppBase>();
+        player.transform.LookAt(ballBasic.wall.transform.position);
     }
 
     public void SignalFromBall(string ballSignal)
@@ -44,7 +46,7 @@ public class RoundManager : MonoBehaviour
             case "GoBack":
                 managerSignal = "return";
                 break;
-            
+
         }
         //oppBase.ChangeState(managerSignal);
     }
